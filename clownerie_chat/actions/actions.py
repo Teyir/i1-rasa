@@ -20,7 +20,7 @@ class ActionSaveBookingToJson(Action):
 
         json_file = "reservation_data.json"
 
-        dispatcher.utter_message(text="Checking if we have a table for you...")
+        dispatcher.utter_message(text="Recherche d'une table disponible...")
         date = tracker.get_slot('slot_date')
         people = tracker.get_slot('slot_people')
         maxLimit = 10
@@ -28,9 +28,9 @@ class ActionSaveBookingToJson(Action):
         available = self.check_for_availability(date, int(people), maxLimit)
 
         if available:
-            dispatcher.utter_message(text="Yes, we have a table available for you !")
+            dispatcher.utter_message(text="Oui, nous avons une table pour vous !")
         else:
-            dispatcher.utter_message(text="Sorry, we don't have a table available for that date and time.")
+            dispatcher.utter_message(text="Désolé mais nous n'avons plus de réservation disponible à cette date")
             return []
 
         def generate_uid():
@@ -77,7 +77,7 @@ class ActionSaveBookingToJson(Action):
             f"- Booked at: {recap_time.strftime('%d-%m-%Y %H:%M')}"
         )
 
-        dispatcher.utter_message(text="Your reservation has been saved.")
+        dispatcher.utter_message(text="Votre réservation a été enregistrée")
         dispatcher.utter_message(text=recap_message)
 
         return []
@@ -118,9 +118,9 @@ class ActionAddComment(Action):
         if booking_found:
             with open(json_file, 'w', encoding='utf-8') as file:
                 json.dump(reservations, file, indent=4)
-                dispatcher.utter_message(text=f"Comment added to booking {reservation_id} : {comment}")
+                dispatcher.utter_message(text=f"Commentaire ajouté à la réservation {reservation_id} : {comment}")
         else:
-            dispatcher.utter_message(text="No booking found with this ID")
+            dispatcher.utter_message(text="Pas de réservation pour cet ID")
         return []
 
 class ActionDeleteBooking(Action):
@@ -144,9 +144,9 @@ class ActionDeleteBooking(Action):
         if booking_found:
             with open(json_file, 'w', encoding='utf-8') as file:
                 json.dump(reservations, file, indent=4)
-                dispatcher.utter_message(text="Your reservation has been successfully cancelled.")
+                dispatcher.utter_message(text="Votre réservation a été annulée avec succès.")
         else:
-            dispatcher.utter_message(text="No booking found with this ID")
+            dispatcher.utter_message(text="Pas de réservation pour cet ID")
         return []
 
 class ActionShowBookingInfos(Action):
@@ -180,15 +180,15 @@ class ActionShowBookingInfos(Action):
         if booking_found:
             recap_time = datetime.datetime.fromtimestamp(reservation_data['created_at'])
             recap_message = (
-                f"Here is your reservation infos :"
-                f"- Reservation ID: {reservation_data['id']}"
+                f"Voici vos informations de réservation :"
+                f"- ID de réservation: {reservation_data['id']}"
                 f"- Date: {reservation_data['date']}"
-                f"- Name: {reservation_data['name']}"
-                f"- Number of Guests: {reservation_data['people']}"
-                f"- Phone: {reservation_data['phone']}"
-                f"- Booked at: {recap_time.strftime('%d-%m-%Y %H:%M')}"
+                f"- Nom: {reservation_data['name']}"
+                f"- Nombre de personnes: {reservation_data['people']}"
+                f"- Téléphone: {reservation_data['phone']}"
+                f"- Réservé à: {recap_time.strftime('%d-%m-%Y %H:%M')}"
             )
             dispatcher.utter_message(text=recap_message)
         else:
-            dispatcher.utter_message(text="No booking found with this ID")
+            dispatcher.utter_message(text="Pas de réservation pour cet ID")
         return []
