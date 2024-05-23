@@ -8,30 +8,144 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - book_table
+  - book_table_date
+  - book_table_people
+  - book_table_name
+  - book_table_phone
+  - check_availability
+  - cancel_reservation
+  - add_comment
+  - show_info
+  - comment
+  - get_allergens
+  - get_menu
+  - cancel_reservation_confirmation
+  - change_reservation_comment
+  - show_info_confirmation
+  - add_comment_confirmation
+
+entities:
+  - date
+  - people
+  - name
+  - phone
+  - comment
+  - reservation_id
+  - cancel_reservation_id
+  - info_reservation_id
+  - comment_reservation_id
+
+actions:
+  - action_save_booking_to_json
+  - action_delete_booking
+  - action_add_comment
+  - action_show_booking_infos
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
+    - text: "Bonjour ! Comment puis-je vous aider aujourd'hui ? Vous pouvez me demander de réserver une table, vérifier le menu, et plus encore."
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Au revoir ! J'espère vous revoir bientôt."
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  utter_book_table_date:
+    - text: "Bien sûr, pour quelle date souhaitez-vous la réservation ?"
+
+  utter_book_table_people:
+    - text: "D'accord, combien de personnes seront présentes ?"
+
+  utter_book_table_name:
+    - text: "Très bien, sous quel nom dois-je placer la réservation ?"
+
+  utter_book_table_phone:
+    - text: "Et enfin, puis-je avoir votre numéro de téléphone s'il vous plaît ?"
+
+  utter_check_availability:
+    - text: "Je vais vérifier la disponibilité pour cette date et ce nombre de personnes."
+
+  utter_ask_reservation_id:
+    - text: "Pouvez-vous fournir votre ID de réservation s'il vous plaît ?"
+
+  utter_ask_cancel:
+    - text: "Veuillez écrire votre ID de réservation comme ceci pour annuler : CANCEL - [ID de réservation]"
+
+  utter_cancel_reservation:
+    - text: "Votre réservation a été annulée avec succès."
+
+  utter_add_comment:
+    - text: "Veuillez écrire votre ID de réservation comme ceci pour ajouter votre commentaire : COMMENT - [ID de réservation]"
+
+  utter_show_info:
+    - text: "Veuillez écrire votre ID de réservation comme ceci pour obtenir vos informations : INFO - [ID de réservation]"
+
+  utter_change_comment:
+    - text: "J'ai mis à jour votre commentaire : {comment}"
+
+  utter_ask_comment:
+    - text: "Veuillez écrire votre commentaire s'il vous plaît"
+
+
+  utter_get_allergens:
+    - text: "Kebab au poulet : Viande de poulet grillée, salade, tomates, oignons, sauce blanche (Allergènes : Gluten)
+      / Kebab végétarien : Légumes grillés, salade, tomates, sauce à l'ail (Allergènes : Gluten)
+      / Assiette de falafel : Boulettes de pois chiches frites, salade, sauce tahini (Allergènes : Gluten, Sésame)
+      / Baklava : Dessert oriental aux noix et au miel (Allergènes : Fruits à coque, Gluten)"
+
+  utter_get_menu:
+    - text: "Kebab au poulet : Viande de poulet grillée, salade, tomates, oignons, sauce blanche - 6,50€
+    / Kebab végétarien : Légumes grillés, salade, tomates, sauce à l'ail - 6,00€
+    / Assiette de falafel : Boulettes de pois chiches frites, salade, sauce tahini - 8,00€
+    / Baklava : Dessert oriental aux noix et au miel - 4,00€"
+
+
+slots:
+  slot_date:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: date
+  slot_people:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: people
+  slot_name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: name
+  slot_phone:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: phone
+  slot_comment:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: comment
+  slot_reservation_id:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: reservation_id
+  slot_cancel_reservation_id:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: cancel_reservation_id
+  slot_info_reservation_id:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: info_reservation_id
+  slot_comment_reservation_id:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: comment_reservation_id
 
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
-
-actions:
-  - action_call_api

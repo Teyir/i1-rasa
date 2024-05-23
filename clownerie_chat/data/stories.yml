@@ -2,30 +2,71 @@ version: "3.1"
 
 stories:
 
-- story: happy path
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-  - action: action_call_api
+  - story: book table process
+    steps:
+      - intent: book_table
+      - action: utter_book_table_date
+      - intent: book_table_date
+        entities:
+          - date: "2024-06-20"
+      - action: utter_book_table_people
+      - intent: book_table_people
+        entities:
+          - people: "4"
+      - action: utter_book_table_name
+      - intent: book_table_name
+        entities:
+          - name: "Axel"
+      - action: utter_book_table_phone
+      - intent: book_table_phone
+        entities:
+          - phone: "+33728374523"
+      - action: action_save_booking_to_json
 
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+  - story: add comment to reservation
+    steps:
+      - intent: add_comment
+        entities:
+          - comment: "C'est un anniversaire"
+      - action: utter_add_comment
 
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+  - story: cancel reservation
+    steps:
+      - intent: cancel_reservation
+      - action: utter_ask_cancel
+      - intent: cancel_reservation_confirmation
+        entities:
+          - cancel_reservation_id: "123456"
+      - action: action_delete_booking
+
+  - story: add comment
+    steps:
+      - intent: add_comment
+      - action: utter_add_comment
+      - intent: add_comment_confirmation
+        entities:
+          - comment_reservation_id: "123456"
+      - action: utter_ask_comment
+      - intent: comment
+        entities:
+          - comment: "je vais être en retard de 10 minutes"
+      - action: action_add_comment
+
+  - story: show reservation infos
+    steps:
+      - intent: show_info
+      - action: utter_show_info
+      - intent: show_info_confirmation
+        entities:
+          - info_reservation_id: "123456"
+      - action: action_show_booking_infos
+
+  - story: query for allergens
+    steps:
+      - intent: get_allergens
+      - action: utter_get_allergens
+
+  - story: get menu
+    steps:
+      - intent: get_menu
+      - action: utter_get_menu
